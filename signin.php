@@ -5,7 +5,7 @@
 <div class="container">
     <h3 class="my-3">Login Page</h3>
 
-    <form action="">
+    <form action="" method="POST">
         <div class="mb-3">
             <label for="email address" class="form-label">Email address</label>
             <input type="email" name="email" class="form-control" aria-describedby="email" placeholder="Enter your email"/>
