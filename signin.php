@@ -5,7 +5,37 @@
 <div class="container">
     <h3 class="my-3">Login Page</h3>
 
-    <form action="" method="POST">
+    <?php 
+        include_once('config/Database.php');
+        include_once('class/UserLogin.php');
+        include_once('class/Utils.php');
+
+        $connectDB = new Database();
+        $db = $connectDB->getConnection();
+
+        $user = new UserLogin($db);
+        $bs = new Bootstrap();
+
+        if (isset($_POST['signin'])) {
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password']);
+
+            if ($user->emailNotExists()) {
+                $bs->displayAlert("Email is not exists", "danger");
+                // echo "<div class='alert alert-danger' role='alert'>Email is not exists try another.</div>";
+            } else {
+                if ($user->verifyPassword()) {
+                    // echo "<div class='alert alert-success' role='alert'>Password matches.</div>";
+                } else {
+                //     echo "<div class='alert alert-danger' role='alert'>Password does not match.</div>";
+                    $bs->displayAlert("Password does not match", "danger");
+                }
+            //     echo "<div class='alert alert-success' role='alert'>Email is exists.</div>";
+            }
+        }
+    ?>
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
         <div class="mb-3">
             <label for="email address" class="form-label">Email address</label>
             <input type="email" name="email" class="form-control" aria-describedby="email" placeholder="Enter your email"/>

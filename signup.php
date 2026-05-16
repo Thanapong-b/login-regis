@@ -9,11 +9,13 @@
 
         include_once('config/Database.php');
         include_once('class/UserRegister.php');
+        include_once('class/Utils.php');
 
         $connectDB = new Database();
         $db = $connectDB->getConnection();
 
         $user = new UserRegister($db);
+        $bs = new Bootstrap();
 
         if (isset($_POST['signup'])) {
             $user->setName($_POST['name']);
@@ -22,18 +24,23 @@
             $user->setConfirmPassword($_POST['confirm_password']);
 
             if (!$user->validatePassword()) {
-                echo "<div class='alert alert-danger' role='alert'>Password do not match.</div>";
+                $bs->displayAlert("Password do not match", "danger");
+                // echo "<div class='alert alert-danger' role='alert'>Password do not match.</div>";
             }
             if (!$user->checkPasswordLength()) {
-                echo "<div class='alert alert-danger' role='alert'>Password must be at least 6 characters long.</div>";
+                $bs->displayAlert("Password must be at least 6 characters long", "danger");
+                // echo "<div class='alert alert-danger' role='alert'>Password must be at least 6 characters long.</div>";
             }
             if ($user->checkEmailExists()) {
-                echo "<div class='alert alert-danger' role='alert'>This email is already exists try another.</div>";
+                $bs->displayAlert("This email is already exists try another", "danger");
+                // echo "<div class='alert alert-danger' role='alert'>This email is already exists try another.</div>";
             }
             if ($user->createUser()) {
-                echo "<div class='alert alert-success' role='alert'>User Created successfully.</div>";
+                $bs->displayAlert("User Created successfully", "success");
+                // echo "<div class='alert alert-success' role='alert'>User Created successfully.</div>";
             } else {
-                echo "<div class='alert alert-danger' role='alert'>Failed to Create user.</div>";
+                $bs->displayAlert("Failed to Create user", "danger");
+                // echo "<div class='alert alert-danger' role='alert'>Failed to Create user.</div>";
             }
         }
 
